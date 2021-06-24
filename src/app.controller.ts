@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('download')
   @Redirect('http://papermc.io', 301)
   async getLatest(@Query('mc_version') mcVersion: string) {
     return { url: await this.appService.getLatest(mcVersion) };
