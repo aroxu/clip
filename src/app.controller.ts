@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query, Redirect } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -11,7 +11,8 @@ export class AppController {
   }
 
   @Get('/latest')
-  getLatest(): string {
-    return this.appService.getLatest();
+  @Redirect('http://papermc.io', 301)
+  async getLatest(@Query('mc_version') mcVersion: string) {
+    return { url: await this.appService.getLatest(mcVersion) };
   }
 }
