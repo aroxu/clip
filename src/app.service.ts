@@ -3,10 +3,6 @@ import axios from 'axios';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'I think you are on wrong way,,,';
-  }
-
   async getLatest(mcVersion: string): Promise<string> {
     const buildsDataWithMcVersions = await axios.get(
       `http://papermc.io/api/v2/projects/paper/versions/${mcVersion}`,
