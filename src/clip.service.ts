@@ -24,7 +24,10 @@ export class ClipService {
               {
                 status: HttpStatus.FORBIDDEN,
                 error: `It seems there is no builds for ${mcVersion}!`,
-                detail_error: error.response.data.error,
+                detail_error:
+                  error.response === undefined
+                    ? 'Failed to send request'
+                    : error.response.data,
                 paper_url: `http://papermc.io/api/v2/projects/paper/versions/${mcVersion}`,
                 tip: `Try to check your version has been built for paper at least once.`,
               },
@@ -72,7 +75,10 @@ export class ClipService {
               {
                 status: HttpStatus.FORBIDDEN,
                 error: `It seems there is no builds for ${mcVersion} with build number ${reqBuildNumber}!`,
-                detail_error: error.response.data.error,
+                detail_error:
+                  error.response === undefined
+                    ? 'Failed to send request'
+                    : error.response.data,
                 paper_url: `http://papermc.io/api/v2/projects/paper/versions/${mcVersion}/builds/${reqBuildNumber}`,
                 tip: `Try to check your version has been built for paper at least once and check your build number.`,
               },
@@ -101,7 +107,7 @@ export class ClipService {
   async getBuildNumbersWithMcVersion(
     mcVersion: string,
   ): Promise<Array<string>> {
-    let buildsDataWithMcVersions;
+    let buildsDataWithMcVersions: { builds: string[] | PromiseLike<string[]> };
     await axios
       .get(`http://papermc.io/api/v2/projects/paper/versions/${mcVersion}`)
       .then((data) => {
@@ -129,7 +135,10 @@ export class ClipService {
             {
               status: HttpStatus.FORBIDDEN,
               error: `It seems there is no builds for ${mcVersion}!`,
-              detail_error: error.response.data.error,
+              detail_error:
+                error.response === undefined
+                  ? 'Failed to send request'
+                  : error.response.data,
               paper_url: `http://papermc.io/api/v2/projects/paper/versions/${mcVersion}`,
               tip: `Try to check your version has been built for paper at least once.`,
             },
@@ -155,7 +164,9 @@ export class ClipService {
   }
 
   async getBuiltMcVersions(): Promise<Array<string>> {
-    let buildsDataWithMcVersions;
+    let buildsDataWithMcVersions: {
+      versions: string[] | PromiseLike<string[]>;
+    };
     await axios
       .get('http://papermc.io/api/v2/projects/paper')
       .then((data) => {
